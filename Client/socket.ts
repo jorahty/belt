@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 
-const socketEndpoint = 'http://192.168.5.117:3000';
+// Typically use https://belt.jorahty.repl.co
+const socketEndpoint = 'https://belt.jorahty.repl.co';
 
 export const socket = io(socketEndpoint, {
   transports: ['websocket'],
