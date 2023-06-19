@@ -7,10 +7,10 @@ This project has two parts that communicate using Socket.io:
 
 ## Usage
 
-- Create `Client/.env` and set the socket endpoint:
+- Set the socket endpoint in `Client/src/Socket/socket.ts`:
 
-  ```
-  SOCKET_ENDPOINT="https://belt.jorahty.repl.co"
+  ```ts
+  const socketEndpoint = 'https://belt.jorahty.repl.co';
   ```
 
   The server listens on port 3000, so I either set the socket endpoint:
