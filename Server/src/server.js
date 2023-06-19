@@ -6,7 +6,7 @@ const port = 3000;
 
 app.use(express.static('public'));
 
-http.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+http.listen(port, () => console.log(`Listening on *:${port}`));
 
 const logSocket = (socketId, count) => {
   const colorIndex = socketId.charCodeAt(0) % 7;
