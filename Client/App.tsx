@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { socket } from './socket';
+import { socket } from './src/socket';
 
 export default function App() {
   const [error, setError] = useState('');
@@ -24,8 +24,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{error}</Text>
-      <Text>{rand}</Text>
+      <Text style={{ color: '#fff' }}>{error}</Text>
+      <Text style={{ color: '#fff' }}>{rand}</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -34,7 +34,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
   },
