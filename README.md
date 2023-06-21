@@ -24,7 +24,7 @@ This project has two parts that communicate using Socket.io:
 - Start the server: `npm run start:server`
 - Start the client: `npm run start:client`
 
-# Notes
+## Notes
 
 - Client is written in TypeScript (because Expo and React Native Skia have
   excellent support for TypeScript)
