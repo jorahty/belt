@@ -1,41 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-import { socket } from './src/socket';
+import { View } from 'react-native';
+import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 
 export default function App() {
-  const [error, setError] = useState('');
-  const [rand, setRand] = useState(0);
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      setError('');
-    });
-
-    socket.on('connect_error', (err: any) => {
-      setError(err.message);
-    });
-
-    socket.on('update', (n) => {
-      setRand(n);
-    });
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text style={{ color: '#fff' }}>{error}</Text>
-      <Text style={{ color: '#fff' }}>{rand}</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <GLView
+        style={{ width: 300, height: 300 }}
+        onContextCreate={onContextCreate}
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function onContextCreate(gl: ExpoWebGLRenderingContext) {
+  gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+  gl.clearColor(0, 1, 1, 1);
+
+  // Create vertex shader (shape & position)
+  const vert = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
+  gl.shaderSource(
+    vert,
+    `
+    void main(void) {
+      gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+      gl_PointSize = 150.0;
+    }
+  `
+  );
+  gl.compileShader(vert);
+
+  // Create fragment shader (color)
+  const frag = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;
+  gl.shaderSource(
+    frag,
+    `
+    void main(void) {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+  `
+  );
+  gl.compileShader(frag);
+
+  // Link together into a program
+  const program = gl.createProgram() as WebGLProgram;
+  gl.attachShader(program, vert);
+  gl.attachShader(program, frag);
+  gl.linkProgram(program);
+  gl.useProgram(program);
+
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.POINTS, 0, 1);
+
+  gl.flush();
+  gl.endFrameEXP();
+}

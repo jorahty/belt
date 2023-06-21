@@ -16,7 +16,8 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
     "react-native-web": "~0.18.10",
-    "socket.io-client": "^4.6.2"
+    "socket.io-client": "^4.6.2",
+    "expo-gl": "~12.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
