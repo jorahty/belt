@@ -24,7 +24,7 @@ export default function Debug() {
   return visible ? (
     <Pressable onPress={() => setVisible(false)}>
       <Text>socketEndpoint: {socketEndpoint}</Text>
-      {error && <Text>error: {error}</Text>}
+      {error ? <Text>error: {error}</Text> : <></>}
       <Text>side: {side}</Text>
     </Pressable>
   ) : (

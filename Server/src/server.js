@@ -96,6 +96,10 @@ io.on('connect', (socket) => {
     Body.setAngularVelocity(player, 0);
     Body.setAngle(player, player.initialAngle - delta * 0.01);
   });
+  socket.on('d', (angle) => {
+    Body.setAngularVelocity(player, 0);
+    Body.setAngle(player, player.angle + angle);
+  });
 
   Events.on(engine, 'beforeUpdate', movePlayer);
 
