@@ -64,7 +64,7 @@ const logSocket = (id, side, isLeaving = false) => {
 };
 
 let playerLeftIsTaken = false;
-const boostStrength = 0.008;
+const boostStrength = 0.005;
 
 io.on('connect', (socket) => {
   let player;
