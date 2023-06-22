@@ -7,7 +7,7 @@ This project has two parts that communicate using Socket.io:
 
 ## Usage
 
-- Set the socket endpoint in `Client/src/Socket/socket.ts`:
+- Set the socket endpoint in `Client/src/socket.ts`:
 
   ```ts
   const socketEndpoint = 'https://belt.jorahty.repl.co';
