@@ -1,3 +1,4 @@
+const Matter = require('matter-js');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -8,32 +9,63 @@ app.use(express.static('public'));
 
 http.listen(port, () => console.log(`Listening on *:${port}`));
 
-const logSocket = (socketId, count) => {
-  const colorIndex = socketId.charCodeAt(0) % 7;
+const logSocket = (id) => {
+  const colorIndex = id.charCodeAt(0) % 7;
   const formatString = `\x1b[3${colorIndex}m%s\x1b[0m`;
-  console.log(formatString, `total: ${count}, connect: ${socketId}`);
+  console.log(formatString, `total: ${io.engine.clientsCount}, id: ${id}`);
 };
 
-let count = 0;
-
 io.on('connect', (socket) => {
-  logSocket(socket.id, ++count);
+  logSocket(socket.id);
 
   socket.on('disconnect', () => {
-    logSocket(socket.id, --count);
+    logSocket(socket.id);
   });
 });
 
-let position = 0;
-let direction = 1;
+// module aliases
+const Engine = Matter.Engine,
+  Runner = Matter.Runner,
+  Bodies = Matter.Bodies,
+  Composite = Matter.Composite;
 
-setInterval(() => {
-  if (position > 10) direction = -1;
-  if (position < -10) direction = 1;
-  position = position + 0.08 * direction;
-  position = Math.round(position * 100) / 100;
-}, 1000 / 120);
+// setup engine and world
+const engine = Engine.create();
+const runner = Runner.create();
+Runner.run(runner, engine);
 
+// create bodies
+const leftPlayer = Bodies.rectangle(-200, 0, 40, 80, { restitution: 0.4 });
+const rightPlayer = Bodies.rectangle(200, 0, 40, 80, { restitution: 0.4 });
+const ball = Bodies.circle(-180, -100, 40, { restitution: 0.8, mass: 0.1 });
+const ground = Bodies.rectangle(0, 200, 1200, 60, { isStatic: true });
+
+// add bodies to world
+Composite.add(engine.world, [leftPlayer, rightPlayer, ball, ground]);
+
+// make them jump!
 setInterval(() => {
-  io.volatile.emit('move', position);
+  [leftPlayer, rightPlayer, ball].forEach((body) => {
+    body.force = { x: 0, y: -0.05 - 0.1 * Math.random() };
+    body.torque = -0.1 + 0.2 * Math.random();
+  });
+  ball.force = { x: 0, y: -0.003 };
+}, 2000);
+
+// broadcast movement
+setInterval(() => {
+  io.volatile.emit(
+    'move',
+    [
+      leftPlayer.position.x,
+      leftPlayer.position.y,
+      leftPlayer.angle,
+      rightPlayer.position.x,
+      rightPlayer.position.y,
+      rightPlayer.angle,
+      ball.position.x,
+      ball.position.y,
+      ball.angle,
+    ].map((n) => Math.round(n * 100) / 100)
+  );
 }, 1000 / 60);
