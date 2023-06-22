@@ -1,6 +1,6 @@
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import { Renderer } from 'expo-three';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Mesh,
   MeshBasicMaterial,
@@ -8,13 +8,20 @@ import {
   PerspectiveCamera,
   Scene,
 } from 'three';
+import { View, Text } from 'react-native';
+import { socket, socketEndpoint } from '../socket';
 
 export default function Canvas() {
-  let timeout: number;
+  const [error, setError] = useState('default');
 
   useEffect(() => {
-    // Clear the animation loop when the component unmounts
-    return () => clearTimeout(timeout);
+    socket.on('connect', () => {
+      setError('');
+    });
+
+    socket.on('connect_error', (err: any) => {
+      setError(err.message);
+    });
   }, []);
 
   const onContextCreate = async (gl: ExpoWebGLRenderingContext) => {
@@ -36,19 +43,18 @@ export default function Canvas() {
     );
     scene.add(square);
 
-    function update() {
-      square.rotation.z += 0.025;
-    }
-
-    // Setup an animation loop
-    const render = () => {
-      timeout = requestAnimationFrame(render);
-      update();
+    socket.on('move', (position) => {
+      square.position.y = position;
       renderer.render(scene, camera);
       gl.endFrameEXP();
-    };
-    render();
+    });
   };
 
-  return <GLView style={{ flex: 1 }} onContextCreate={onContextCreate} />;
+  return (
+    <View style={{ flex: 1 }}>
+      <GLView style={{ flex: 1 }} onContextCreate={onContextCreate} />
+      <Text>socketEndpoint: {socketEndpoint}</Text>
+      {error && <Text>error: {error}</Text>}
+    </View>
+  );
 }
