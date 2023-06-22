@@ -25,7 +25,7 @@ Runner.run(runner, engine);
 // create bodies
 const leftPlayer = Bodies.rectangle(-200, 0, 40, 80, { restitution: 0.4 });
 const rightPlayer = Bodies.rectangle(200, 0, 40, 80, { restitution: 0.4 });
-const ball = Bodies.circle(-180, -100, 40, { restitution: 0.8, mass: 0.1 });
+const ball = Bodies.circle(-180, -100, 40, { restitution: 0.8, mass: 0.2 });
 const ground = Bodies.rectangle(0, 200, 1200, 60, { isStatic: true });
 
 // add bodies to world
@@ -94,11 +94,11 @@ io.on('connect', (socket) => {
   socket.on('i', () => (player.initialAngle = player.angle));
   socket.on('r', (delta) => {
     Body.setAngularVelocity(player, 0);
-    Body.setAngle(player, player.initialAngle - delta * 0.01);
+    Body.setAngle(player, player.initialAngle + delta * 0.01);
   });
   socket.on('d', (angle) => {
     Body.setAngularVelocity(player, 0);
-    Body.setAngle(player, player.angle + angle);
+    Body.setAngle(player, player.angle - angle);
   });
 
   Events.on(engine, 'beforeUpdate', movePlayer);
