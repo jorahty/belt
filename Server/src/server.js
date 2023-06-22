@@ -49,14 +49,17 @@ setInterval(() => {
   );
 }, 1000 / 60);
 
+let count = 0;
+
 const logSocket = (id, side, isLeaving = false) => {
   const colorIndex = id.charCodeAt(0) % 7;
   const formatString = `\x1b[3${colorIndex}m%s\x1b[0m`;
+  count = isLeaving ? count - 1 : count + 1;
   console.log(
     formatString,
     `${isLeaving ? '🚪' : '🙋'} total: ${
       io.engine.clientsCount
-    }, id: ${id}, side: ${side}`
+    }-${count}, id: ${id}, side: ${side}`
   );
 };
 
