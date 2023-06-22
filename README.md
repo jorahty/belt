@@ -30,3 +30,17 @@ This project has two parts that communicate using Socket.io:
   excellent support for TypeScript)
 - Server is written in JavaScript (because Socket.io, and especially Matter.js,
   do not have the best support for TypeScript)
+
+- src
+  - components
+    - controls
+      - controls.tsx
+      - mobile.tsx
+      - web.tsx
+    - canvas.tsx
+    - debug.tsx
+  - socket.ts
+
+(Platform.OS == 'web' and isLandscape) ? web : mobile
+
+when on web, try attatching event listeners to `window` as normal

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { SafeAreaView, View, Pressable, Text } from 'react-native';
 
-import { socket } from '../socket';
+import { socket } from '../../socket';
 
 export default function Controls() {
   const [isPressed, setIsPressed] = useState(false);
