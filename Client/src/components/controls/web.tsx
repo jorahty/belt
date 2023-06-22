@@ -11,7 +11,7 @@ export default function WebControls() {
   };
 
   const handleWheel = (e: WheelEvent) => {
-    socket.volatile.emit('d', e.deltaY * 0.006);
+    socket.volatile.emit('r', e.deltaY * 0.006);
   };
 
   useEffect(() => {

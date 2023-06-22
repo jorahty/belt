@@ -92,11 +92,11 @@ io.on('connect', (socket) => {
   };
 
   socket.on('i', () => (player.initialAngle = player.angle));
-  socket.on('r', (delta) => {
+  socket.on('d', (delta) => {
     Body.setAngularVelocity(player, 0);
     Body.setAngle(player, player.initialAngle + delta * 0.01);
   });
-  socket.on('d', (angle) => {
+  socket.on('r', (angle) => {
     Body.setAngularVelocity(player, 0);
     Body.setAngle(player, player.angle - angle);
   });

@@ -24,7 +24,7 @@ export default function MobileControls() {
 
   const onDialMove = (y: number) => {
     const delta = Math.round(y - init.current);
-    socket.volatile.emit('r', delta);
+    socket.volatile.emit('d', delta);
   };
 
   return (
