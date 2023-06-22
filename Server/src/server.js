@@ -86,7 +86,7 @@ io.on('connect', (socket) => {
   const movePlayer = () => {
     if (player.isBoosting)
       player.force = {
-        x: -boostStrength * Math.sin(player.angle),
+        x: boostStrength * Math.sin(player.angle),
         y: -boostStrength * Math.cos(player.angle),
       };
   };

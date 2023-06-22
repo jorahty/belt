@@ -19,8 +19,8 @@ export default function Canvas() {
     renderer.setSize(width, height);
     renderer.setClearColor(0x656366);
 
-    const camera = new PerspectiveCamera(70, width / height, 0.01, 2000);
-    camera.position.set(0, -300, -900);
+    const camera = new PerspectiveCamera(30, width / height, 2090, 2200);
+    camera.position.set(0, -300, -2200);
     camera.rotation.z = Math.PI;
     camera.rotation.y = Math.PI;
 
@@ -40,7 +40,7 @@ export default function Canvas() {
       new MeshBasicMaterial({ color: 0x7b89f5 })
     );
     const ball = new Mesh(
-      new CircleGeometry(40, 16),
+      new CircleGeometry(40, 32),
       new MeshBasicMaterial({ color: 0xd1cfd2 })
     );
 
@@ -53,13 +53,13 @@ export default function Canvas() {
     socket.on('move', (poses) => {
       playerLeft.position.x = poses[0];
       playerLeft.position.y = poses[1];
-      playerLeft.rotation.z = poses[2];
+      playerLeft.rotation.z = -poses[2];
       playerRight.position.x = poses[3];
       playerRight.position.y = poses[4];
-      playerRight.rotation.z = poses[5];
+      playerRight.rotation.z = -poses[5];
       ball.position.x = poses[6];
       ball.position.y = poses[7];
-      ball.rotation.z = poses[8];
+      ball.rotation.z = -poses[8];
       renderer.render(scene, camera);
       gl.endFrameEXP();
     });
