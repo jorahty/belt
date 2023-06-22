@@ -31,11 +31,10 @@ export default function MobileControls() {
     <SafeAreaView style={{ backgroundColor: '#5a4e81' }}>
       <View
         style={{
-          padding: 10,
+          padding: 20,
           flexDirection: 'row',
-          gap: 10,
+          gap: 20,
           height: 280,
-          borderTopWidth: 1.5,
         }}>
         <View
           onStartShouldSetResponder={() => true}
@@ -46,7 +45,6 @@ export default function MobileControls() {
             backgroundColor: '#5589aa',
             padding: 30,
             borderRadius: 20,
-            borderWidth: 1.5,
           }}
         />
         <Pressable
@@ -59,7 +57,6 @@ export default function MobileControls() {
             backgroundColor: isPressed ? '#b875f7' : '#5589aa',
             padding: 30,
             borderRadius: 20,
-            borderWidth: 1.5,
           }}
         />
       </View>
