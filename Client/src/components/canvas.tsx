@@ -13,7 +13,8 @@ import { View, Text } from 'react-native';
 import { socket, socketEndpoint } from '../socket';
 
 export default function Canvas() {
-  const [error, setError] = useState('default');
+  const [error, setError] = useState('unset');
+  const [side, setSide] = useState('unset');
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -22,6 +23,10 @@ export default function Canvas() {
 
     socket.on('connect_error', (err: any) => {
       setError(err.message);
+    });
+
+    socket.on('side', (s) => {
+      setSide(s);
     });
   }, []);
 
@@ -84,6 +89,7 @@ export default function Canvas() {
       <GLView style={{ flex: 1 }} onContextCreate={onContextCreate} />
       <Text>socketEndpoint: {socketEndpoint}</Text>
       {error && <Text>error: {error}</Text>}
+      <Text>side: {side}</Text>
     </View>
   );
 }

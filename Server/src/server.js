@@ -9,20 +9,6 @@ app.use(express.static('public'));
 
 http.listen(port, () => console.log(`Listening on *:${port}`));
 
-const logSocket = (id) => {
-  const colorIndex = id.charCodeAt(0) % 7;
-  const formatString = `\x1b[3${colorIndex}m%s\x1b[0m`;
-  console.log(formatString, `total: ${io.engine.clientsCount}, id: ${id}`);
-};
-
-io.on('connect', (socket) => {
-  logSocket(socket.id);
-
-  socket.on('disconnect', () => {
-    logSocket(socket.id);
-  });
-});
-
 // module aliases
 const Engine = Matter.Engine,
   Runner = Matter.Runner,
@@ -69,3 +55,36 @@ setInterval(() => {
     ].map((n) => Math.round(n * 100) / 100)
   );
 }, 1000 / 60);
+
+const logSocket = (id, side, isLeaving = false) => {
+  const colorIndex = id.charCodeAt(0) % 7;
+  const formatString = `\x1b[3${colorIndex}m%s\x1b[0m`;
+  console.log(
+    formatString,
+    `${isLeaving ? '🚪' : '🙋'} total: ${
+      io.engine.clientsCount
+    }, id: ${id}, side: ${side}`
+  );
+};
+
+let playerLeftIsTaken = false;
+
+io.on('connect', (socket) => {
+  let player;
+
+  if (playerLeftIsTaken == false) {
+    player = leftPlayer;
+    playerLeftIsTaken = true;
+  } else {
+    player = rightPlayer;
+  }
+
+  const side = player === leftPlayer ? 'left' : 'right';
+  logSocket(socket.id, side);
+  socket.emit('side', side);
+
+  socket.on('disconnect', () => {
+    if (player === leftPlayer) playerLeftIsTaken = false;
+    logSocket(socket.id, side, true);
+  });
+});
