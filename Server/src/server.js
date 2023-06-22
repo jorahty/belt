@@ -24,6 +24,16 @@ io.on('connect', (socket) => {
   });
 });
 
+let position = 0;
+let direction = 1;
+
 setInterval(() => {
-  io.volatile.emit('update', Math.random());
+  if (position > 10) direction = -1;
+  if (position < -10) direction = 1;
+  position = position + 0.08 * direction;
+  position = Math.round(position * 100) / 100;
+}, 1000 / 120);
+
+setInterval(() => {
+  io.volatile.emit('move', position);
 }, 1000 / 60);
