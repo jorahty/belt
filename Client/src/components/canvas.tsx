@@ -1,6 +1,5 @@
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import { Renderer } from 'expo-three';
-import { useEffect, useState } from 'react';
 import {
   Scene,
   PerspectiveCamera,
@@ -9,27 +8,9 @@ import {
   MeshBasicMaterial,
   Mesh,
 } from 'three';
-import { View, Text } from 'react-native';
-import { socket, socketEndpoint } from '../socket';
+import { socket } from '../socket';
 
 export default function Canvas() {
-  const [error, setError] = useState('unset');
-  const [side, setSide] = useState('unset');
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      setError('');
-    });
-
-    socket.on('connect_error', (err: any) => {
-      setError(err.message);
-    });
-
-    socket.on('side', (s) => {
-      setSide(s);
-    });
-  }, []);
-
   const onContextCreate = async (gl: ExpoWebGLRenderingContext) => {
     const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
 
@@ -84,12 +65,5 @@ export default function Canvas() {
     });
   };
 
-  return (
-    <View style={{ flex: 1 }}>
-      <GLView style={{ flex: 1 }} onContextCreate={onContextCreate} />
-      <Text>socketEndpoint: {socketEndpoint}</Text>
-      {error && <Text>error: {error}</Text>}
-      <Text>side: {side}</Text>
-    </View>
-  );
+  return <GLView style={{ flex: 1 }} onContextCreate={onContextCreate} />;
 }
