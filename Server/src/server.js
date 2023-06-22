@@ -11,6 +11,7 @@ http.listen(port, () => console.log(`Listening on *:${port}`));
 
 // module aliases
 const Engine = Matter.Engine,
+  Events = Matter.Events,
   Runner = Matter.Runner,
   Bodies = Matter.Bodies,
   Composite = Matter.Composite;
@@ -28,15 +29,6 @@ const ground = Bodies.rectangle(0, 200, 1200, 60, { isStatic: true });
 
 // add bodies to world
 Composite.add(engine.world, [leftPlayer, rightPlayer, ball, ground]);
-
-// make them jump!
-setInterval(() => {
-  [leftPlayer, rightPlayer, ball].forEach((body) => {
-    body.force = { x: 0, y: -0.05 - 0.1 * Math.random() };
-    body.torque = -0.1 + 0.2 * Math.random();
-  });
-  ball.force = { x: 0, y: -0.003 };
-}, 2000);
 
 // broadcast movement
 setInterval(() => {
@@ -68,6 +60,7 @@ const logSocket = (id, side, isLeaving = false) => {
 };
 
 let playerLeftIsTaken = false;
+const boostStrength = 0.008;
 
 io.on('connect', (socket) => {
   let player;
@@ -83,8 +76,22 @@ io.on('connect', (socket) => {
   logSocket(socket.id, side);
   socket.emit('side', side);
 
+  socket.on('b', () => (player.isBoosting = true));
+  socket.on('B', () => (player.isBoosting = false));
+
+  const movePlayer = () => {
+    if (player.isBoosting)
+      player.force = {
+        x: -boostStrength * Math.sin(player.angle),
+        y: -boostStrength * Math.cos(player.angle),
+      };
+  };
+
+  Events.on(engine, 'beforeUpdate', movePlayer);
+
   socket.on('disconnect', () => {
     if (player === leftPlayer) playerLeftIsTaken = false;
+    Events.off(engine, 'beforeUpdate', movePlayer);
     logSocket(socket.id, side, true);
   });
 });
