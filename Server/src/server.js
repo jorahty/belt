@@ -13,6 +13,7 @@ http.listen(port, () => console.log(`Listening on *:${port}`));
 const Engine = Matter.Engine,
   Events = Matter.Events,
   Runner = Matter.Runner,
+  Body = Matter.Body,
   Bodies = Matter.Bodies,
   Composite = Matter.Composite;
 
@@ -86,6 +87,12 @@ io.on('connect', (socket) => {
         y: -boostStrength * Math.cos(player.angle),
       };
   };
+
+  socket.on('i', () => (player.initialAngle = player.angle));
+  socket.on('r', (delta) => {
+    Body.setAngularVelocity(player, 0);
+    Body.setAngle(player, player.initialAngle - delta * 0.01);
+  });
 
   Events.on(engine, 'beforeUpdate', movePlayer);
 
