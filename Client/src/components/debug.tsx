@@ -22,7 +22,9 @@ export default function Debug() {
   }, []);
 
   return visible ? (
-    <Pressable onPress={() => setVisible(false)}>
+    <Pressable
+      onPress={() => setVisible(false)}
+      style={{ position: 'absolute', padding: 40 }}>
       <Text>socketEndpoint: {socketEndpoint}</Text>
       {error ? <Text>error: {error}</Text> : <></>}
       <Text>side: {side}</Text>
