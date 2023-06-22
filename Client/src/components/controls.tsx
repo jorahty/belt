@@ -28,17 +28,25 @@ export default function Controls() {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#ca9' }}>
-      <View style={{ padding: 20, flexDirection: 'row', gap: 20, height: 300 }}>
+    <SafeAreaView style={{ backgroundColor: '#5a4e81' }}>
+      <View
+        style={{
+          padding: 10,
+          flexDirection: 'row',
+          gap: 10,
+          height: 280,
+          borderTopWidth: 1.5,
+        }}>
         <View
           onStartShouldSetResponder={() => true}
           onResponderGrant={({ nativeEvent: { pageY } }) => onDialDown(pageY)}
           onResponderMove={({ nativeEvent: { pageY } }) => onDialMove(pageY)}
           style={{
             width: 100,
-            backgroundColor: '#67f',
+            backgroundColor: '#5589aa',
             padding: 30,
             borderRadius: 20,
+            borderWidth: 1.5,
           }}
         />
         <Pressable
@@ -48,9 +56,10 @@ export default function Controls() {
           onTouchEnd={stopBoost}
           style={{
             flex: 1,
-            backgroundColor: isPressed ? '#a7a' : '#67f',
+            backgroundColor: isPressed ? '#b875f7' : '#5589aa',
             padding: 30,
             borderRadius: 20,
+            borderWidth: 1.5,
           }}
         />
       </View>
