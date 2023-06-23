@@ -79,6 +79,7 @@ export default function Canvas() {
       ball.rotation.z = -poses[8];
       camera.position.x =
         side === 'left' ? playerLeft.position.x : playerRight.position.x;
+
       renderer.render(scene, camera);
       gl.endFrameEXP();
     });
