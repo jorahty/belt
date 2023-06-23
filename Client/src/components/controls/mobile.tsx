@@ -28,7 +28,7 @@ export default function MobileControls() {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#5a4e81' }}>
+    <SafeAreaView style={{ backgroundColor: '#45406b' }}>
       <View
         style={{
           padding: 20,
@@ -42,7 +42,7 @@ export default function MobileControls() {
           onResponderMove={({ nativeEvent: { pageY } }) => onDialMove(pageY)}
           style={{
             width: 100,
-            backgroundColor: '#5589aa',
+            backgroundColor: '#6f8ae4',
             padding: 30,
             borderRadius: 20,
           }}
@@ -54,7 +54,7 @@ export default function MobileControls() {
           onTouchEnd={stopBoost}
           style={{
             flex: 1,
-            backgroundColor: isPressed ? '#b875f7' : '#5589aa',
+            backgroundColor: isPressed ? '#49a581' : '#6f8ae4',
             padding: 30,
             borderRadius: 20,
           }}

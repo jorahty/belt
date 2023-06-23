@@ -17,7 +17,7 @@ export default function Canvas() {
     // Create a WebGLRenderer without a DOM element
     const renderer = new Renderer({ gl });
     renderer.setSize(width, height);
-    renderer.setClearColor(0x656366);
+    renderer.setClearColor(0x3a4260);
 
     const camera = new PerspectiveCamera(30, width / height, 2090, 2200);
     camera.position.set(0, -300, -2200);
@@ -28,20 +28,20 @@ export default function Canvas() {
 
     const ground = new Mesh(
       new PlaneGeometry(1200, 60),
-      new MeshBasicMaterial({ color: 0x8e8c8e })
+      new MeshBasicMaterial({ color: 0x5a6984 })
     );
     ground.position.y = 200;
     const playerLeft = new Mesh(
       new PlaneGeometry(40, 80),
-      new MeshBasicMaterial({ color: 0xbf7779 })
+      new MeshBasicMaterial({ color: 0x49a581 })
     );
     const playerRight = new Mesh(
       new PlaneGeometry(40, 80),
-      new MeshBasicMaterial({ color: 0x7b89f5 })
+      new MeshBasicMaterial({ color: 0x6f8ae4 })
     );
     const ball = new Mesh(
       new CircleGeometry(40, 32),
-      new MeshBasicMaterial({ color: 0xd1cfd2 })
+      new MeshBasicMaterial({ color: 0xc4b3d9 })
     );
 
     [ground, playerLeft, playerRight, ball].forEach(
