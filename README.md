@@ -3,7 +3,7 @@
 This project has two parts that communicate using Socket.io:
 
 1. `Server` using Matter.js (intended for deployment to Replit)
-2. `Client` using Expo (intended for deployment iOS, Android, and Web)
+2. `Client` using Expo (intended for deployment to iOS, Android, and Web)
 
 ## Usage
 
