@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { SafeAreaView, View, Pressable } from 'react-native';
+import { SafeAreaView, View, Pressable, Text } from 'react-native';
 
 import { socket } from '../../socket';
 
@@ -57,8 +57,18 @@ export default function MobileControls() {
             backgroundColor: isPressed ? '#49a581' : '#6f8ae4',
             padding: 30,
             borderRadius: 20,
-          }}
-        />
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 48,
+              fontWeight: '800',
+            }}>
+            B
+          </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
