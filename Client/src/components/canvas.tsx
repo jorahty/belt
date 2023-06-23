@@ -36,8 +36,8 @@ export default function Canvas() {
     for (let i = 0; i < coordinates.length; i += 2) {
       let x = coordinates[i];
       let y = coordinates[i + 1];
-      x -= 2008 / 2; // 2008 = max(x-values)
-      y -= 1377 / 2; // 1377 = max(y-values)
+      x -= 1025;
+      y -= 700;
       points.push(new Vector2(x, y));
     }
 
@@ -45,11 +45,6 @@ export default function Canvas() {
       new ShapeGeometry(new Shape(points)),
       new MeshBasicMaterial({ color: 0x5a6984 })
     );
-    const ground = new Mesh(
-      new PlaneGeometry(1200, 60),
-      new MeshBasicMaterial({ color: 0x5a6984 })
-    );
-    ground.position.y = 200;
     const playerLeft = new Mesh(
       new PlaneGeometry(40, 80),
       new MeshBasicMaterial({ color: 0x49a581 })
@@ -63,11 +58,11 @@ export default function Canvas() {
       new MeshBasicMaterial({ color: 0xc4b3d9 })
     );
 
-    [ground, arena, playerLeft, playerRight, ball].forEach(
+    [arena, playerLeft, playerRight, ball].forEach(
       (body) => (body.rotation.y = Math.PI)
     );
 
-    scene.add(arena, ground, playerLeft, playerRight, ball);
+    scene.add(arena, playerLeft, playerRight, ball);
 
     let side: string;
     socket.on('side', (s) => (side = s));
