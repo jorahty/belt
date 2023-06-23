@@ -1,14 +1,14 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { View } from 'react-native';
 
 import { socket } from '../../../socket';
 
 export default function Dial() {
-  // const [isPressed, setIsPressed] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const init = useRef(0);
 
   const onDialDown = (y: number) => {
-    // setIsPressed(true);
+    setIsPressed(true);
     init.current = y;
     socket.volatile.emit('i');
   };
@@ -23,9 +23,10 @@ export default function Dial() {
       onStartShouldSetResponder={() => true}
       onResponderGrant={({ nativeEvent: { pageY } }) => onDialDown(pageY)}
       onResponderMove={({ nativeEvent: { pageY } }) => onDialMove(pageY)}
+      onResponderRelease={() => setIsPressed(false)}
       style={{
         width: 100,
-        backgroundColor: '#6f8ae4',
+        backgroundColor: isPressed ? '#49a581' : '#6f8ae4',
         padding: 30,
         borderRadius: 20,
       }}
