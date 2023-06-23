@@ -108,17 +108,12 @@ io.on('connect', (socket) => {
       };
   };
 
-  socket.on('i', () => (player.initialAngle = player.angle));
-  socket.on('d', (delta) => {
-    Body.setAngularVelocity(player, 0);
-    Body.setAngle(player, player.initialAngle + delta * 0.01);
-  });
+  Events.on(engine, 'beforeUpdate', movePlayer);
+
   socket.on('r', (angle) => {
     Body.setAngularVelocity(player, 0);
     Body.setAngle(player, player.angle - angle);
   });
-
-  Events.on(engine, 'beforeUpdate', movePlayer);
 
   socket.on('disconnect', () => {
     if (player === leftPlayer) playerLeftIsTaken = false;

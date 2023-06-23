@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import { socket } from '../../../socket';
 
@@ -11,18 +11,24 @@ export default function Dial() {
   const onDialDown = (y: number) => {
     setIsPressed(true);
     init.current = y;
-    socket.volatile.emit('i');
   };
 
   const onDialMove = (y: number) => {
-    const delta = Math.round(y - init.current);
-    socket.volatile.emit('d', delta);
-    setDisplacement(delta);
+    const delta = y - init.current;
+    if (delta !== 0) {
+      socket.volatile.emit('r', delta * 0.01);
+      setDisplacement(displacement + delta);
+      init.current = y;
+    }
   };
 
-  function wrapAround(displacement: number): number {
-    if (displacement < 0) return 190 - (Math.abs(0 - displacement) % 190);
-    return displacement % 190;
+  const onDialUp = () => {
+    setIsPressed(false);
+  };
+
+  function wrapAround(x: number, min: number, max: number): number {
+    if (x < 0) return min + max - (Math.abs(0 - x) % max);
+    return min + (x % max);
   }
 
   return (
@@ -30,7 +36,7 @@ export default function Dial() {
       onStartShouldSetResponder={() => true}
       onResponderGrant={({ nativeEvent: { pageY } }) => onDialDown(pageY)}
       onResponderMove={({ nativeEvent: { pageY } }) => onDialMove(pageY)}
-      onResponderRelease={() => setIsPressed(false)}
+      onResponderRelease={onDialUp}
       style={{
         width: 100,
         backgroundColor: isPressed ? '#49a581' : '#6f8ae4',
@@ -46,7 +52,7 @@ export default function Dial() {
             borderRadius: 100,
             backgroundColor: '#fff',
             position: 'absolute',
-            top: 20 + wrapAround(displacement + 24 * index),
+            top: wrapAround(displacement + 24 * index, 20, 190),
           }}
         />
       ))}
