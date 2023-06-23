@@ -19,7 +19,7 @@ export default function Canvas() {
     renderer.setSize(width, height);
     renderer.setClearColor(0x3a4260);
 
-    const camera = new PerspectiveCamera(30, width / height, 2090, 2200);
+    const camera = new PerspectiveCamera(30, width / height, 2150, 2250);
     camera.position.set(0, -300, -2200);
     camera.rotation.z = Math.PI;
     camera.rotation.y = Math.PI;
