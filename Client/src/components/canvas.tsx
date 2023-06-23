@@ -7,6 +7,9 @@ import {
   CircleGeometry,
   MeshBasicMaterial,
   Mesh,
+  ShapeGeometry,
+  Shape,
+  Vector2,
 } from 'three';
 import { socket } from '../socket';
 
@@ -20,12 +23,28 @@ export default function Canvas() {
     renderer.setClearColor(0x3a4260);
 
     const camera = new PerspectiveCamera(30, width / height, 2150, 2250);
-    camera.position.set(0, -300, -2200);
+    camera.position.set(0, 0, -2200);
     camera.rotation.z = Math.PI;
     camera.rotation.y = Math.PI;
 
     const scene = new Scene();
 
+    const vertexString =
+      '1740 997 1595 1142 442 1142 297 997 297 841 118 841 118 605 297 605 297 165 1008 165 1008 1 1 1 1 1377 2008 1377 2008 1 1028 1 1028 165 1740 165 1740 605 1918 605 1918 841 1740 841';
+    const coordinates = vertexString.split(' ').map((str) => parseInt(str));
+    const points = [];
+    for (let i = 0; i < coordinates.length; i += 2) {
+      let x = coordinates[i];
+      let y = coordinates[i + 1];
+      x -= 2008 / 2; // 2008 = max(x-values)
+      y -= 1377 / 2; // 1377 = max(y-values)
+      points.push(new Vector2(x, y));
+    }
+
+    const arena = new Mesh(
+      new ShapeGeometry(new Shape(points)),
+      new MeshBasicMaterial({ color: 0x5a6984 })
+    );
     const ground = new Mesh(
       new PlaneGeometry(1200, 60),
       new MeshBasicMaterial({ color: 0x5a6984 })
@@ -44,11 +63,11 @@ export default function Canvas() {
       new MeshBasicMaterial({ color: 0xc4b3d9 })
     );
 
-    [ground, playerLeft, playerRight, ball].forEach(
+    [ground, arena, playerLeft, playerRight, ball].forEach(
       (body) => (body.rotation.y = Math.PI)
     );
 
-    scene.add(playerLeft, playerRight, ball, ground);
+    scene.add(arena, ground, playerLeft, playerRight, ball);
 
     let side: string;
     socket.on('side', (s) => (side = s));
