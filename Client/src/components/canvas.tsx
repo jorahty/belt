@@ -50,6 +50,9 @@ export default function Canvas() {
 
     scene.add(playerLeft, playerRight, ball, ground);
 
+    let side: string;
+    socket.on('side', (s) => (side = s));
+
     socket.on('move', (poses) => {
       playerLeft.position.x = poses[0];
       playerLeft.position.y = poses[1];
@@ -60,6 +63,8 @@ export default function Canvas() {
       ball.position.x = poses[6];
       ball.position.y = poses[7];
       ball.rotation.z = -poses[8];
+      camera.position.x =
+        side === 'left' ? playerLeft.position.x : playerRight.position.x;
       renderer.render(scene, camera);
       gl.endFrameEXP();
     });
