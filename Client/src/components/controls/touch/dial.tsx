@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { socket } from '../../../socket';
 
@@ -43,18 +43,18 @@ export default function Dial() {
         borderRadius: 20,
         alignItems: 'center',
       }}>
-      {Array.from({ length: 8 }, (_, index) => (
-        <View
+      {Array.from({ length: 6 }, (_, index) => (
+        <Text
           key={index}
           style={{
-            width: 50,
-            height: 10,
-            borderRadius: 100,
-            backgroundColor: '#fff',
+            fontSize: 96,
+            fontWeight: 'bold',
+            color: '#fff',
             position: 'absolute',
-            top: wrapAround(displacement + 24 * index, 20, 190),
-          }}
-        />
+            top: wrapAround(displacement + 30 * index, -30, 180),
+          }}>
+          –
+        </Text>
       ))}
     </View>
   );
